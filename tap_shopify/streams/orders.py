@@ -1166,7 +1166,7 @@ class Orders(Stream):
                         "bulk_operation_id": op.get("id"),
                         "status": current_status,
                         "created_at": op.get("createdAt"),
-                        "last_date_window": self.date_window_size,
+                        "last_date_window": int(self.date_window_size),
                     }
                 )
                 return op.get("url")
@@ -1184,7 +1184,7 @@ class Orders(Stream):
                 "bulk_operation_id": op.get("id"),
                 "status": op.get("status"),
                 "created_at": op.get("createdAt"),
-                "last_date_window": self.date_window_size,
+                "last_date_window": int(self.date_window_size),
             }
         )
 
