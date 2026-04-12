@@ -615,68 +615,61 @@
       }
     },
     "customerJourneySummary": {
-      "type": [
-        "null",
-        "object"
-      ],
+      "type": ["null", "object"],
       "properties": {
-        "lastVisit": {
-            "type": [
-                "null",
-                "object"
-            ],
-            "properties": {
-                "landingPage": {
-                    "type": [
-                        "null",
-                        "string"
-                    ]
-                },
-                "referrerUrl": {
-                    "type": [
-                        "null",
-                        "string"
-                    ]
-                }
-            }
+        "customerOrderIndex": {
+          "type": ["null", "integer"]
         },
-        "utmParameters": {
-          "type": [
-              "null",
-              "object"
-          ],
+        "daysToConversion": {
+          "type": ["null", "integer"]
+        },
+        "firstVisit": {
+          "type": ["null", "object"],
           "properties": {
-              "campaign": {
-                  "type": [
-                      "null",
-                      "string"
-                  ]
-              },
-              "content": {
-                  "type": [
-                      "null",
-                      "string"
-                  ]
-              },
-              "medium": {
-                  "type": [
-                      "null",
-                      "string"
-                  ]
-              },
-              "source": {
-                  "type": [
-                      "null",
-                      "string"
-                  ]
-              },
-              "term": {
-                  "type": [
-                      "null",
-                      "string"
-                  ]
+            "landingPage": { "type": ["null", "string"] },
+            "referrerUrl": { "type": ["null", "string"] },
+            "source": { "type": ["null", "string"] },
+            "sourceType": { "type": ["null", "string"] },
+            "utmParameters": {
+              "type": ["null", "object"],
+              "properties": {
+                "campaign": { "type": ["null", "string"] },
+                "content": { "type": ["null", "string"] },
+                "medium": { "type": ["null", "string"] },
+                "source": { "type": ["null", "string"] },
+                "term": { "type": ["null", "string"] }
               }
+            }
           }
+        },
+        "lastVisit": {
+          "type": ["null", "object"],
+          "properties": {
+            "landingPage": { "type": ["null", "string"] },
+            "referrerUrl": { "type": ["null", "string"] },
+            "source": { "type": ["null", "string"] },
+            "sourceType": { "type": ["null", "string"] },
+            "utmParameters": {
+              "type": ["null", "object"],
+              "properties": {
+                "campaign": { "type": ["null", "string"] },
+                "content": { "type": ["null", "string"] },
+                "medium": { "type": ["null", "string"] },
+                "source": { "type": ["null", "string"] },
+                "term": { "type": ["null", "string"] }
+              }
+            }
+          }
+        },
+        "momentsCount": {
+          "type": ["null", "object"],
+          "properties": {
+            "count": { "type": ["null", "integer"] },
+            "precision": { "type": ["null", "string"] }
+          }
+        },
+        "ready": {
+          "type": ["null", "boolean"]
         }
       }
     },

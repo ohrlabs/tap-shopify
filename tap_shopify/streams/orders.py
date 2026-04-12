@@ -252,10 +252,39 @@ class Orders(Stream):
                 }
                 }
                 customerJourneySummary {
+                customerOrderIndex
+                daysToConversion
+                firstVisit {
+                    landingPage
+                    referrerUrl
+                    source
+                    sourceType
+                    utmParameters {
+                    campaign
+                    content
+                    medium
+                    source
+                    term
+                    }
+                }
                 lastVisit {
                     landingPage
                     referrerUrl
+                    source
+                    sourceType
+                    utmParameters {
+                    campaign
+                    content
+                    medium
+                    source
+                    term
+                    }
                 }
+                momentsCount {
+                    count
+                    precision
+                }
+                ready
                 }
                 merchantOfRecordApp {
                 id
