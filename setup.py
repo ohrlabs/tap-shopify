@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 setup(
     name="tap-shopify",
-    version="3.10.0",
+    version="3.11.0",
     description="Singer.io tap for extracting Shopify data",
     author="Stitch",
     url="http://github.com/singer-io/tap-shopify",
@@ -14,15 +14,15 @@ setup(
     install_requires=[
         # Important: review the monkey-patched method in the GraphQL client when upgrading this dependency.
         "ShopifyAPI==12.7.0",
-        "singer-python==6.1.1",
+        "singer-python==6.8.0",
         "graphql-core==3.2.6",
-        'requests==2.32.4',
+        'requests==2.34.2',
     ],
     extras_require={
         'dev': [
             'pylint==3.3.6',
             'ipdb',
-            'requests==2.32.4',
+            'requests==2.34.2',
             'nose',
         ]
     },
