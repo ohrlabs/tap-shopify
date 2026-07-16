@@ -284,6 +284,27 @@ class Orders(Stream):
                     count
                     precision
                 }
+                moments {
+                    edges {
+                    node {
+                        __typename
+                        occurredAt
+                        ... on CustomerVisit {
+                        landingPage
+                        referrerUrl
+                        source
+                        sourceType
+                        utmParameters {
+                            campaign
+                            content
+                            medium
+                            source
+                            term
+                        }
+                        }
+                    }
+                    }
+                }
                 ready
                 }
                 merchantOfRecordApp {
@@ -1058,6 +1079,11 @@ class Orders(Stream):
             return True
         return False
 
+    def is_customer_journey_moment(self, rec):
+        # CustomerVisit is currently the only type implementing the
+        # CustomerMoment interface returned by customerJourneySummary.moments.
+        return rec.get('__typename') == 'CustomerVisit'
+
     def update_bookmark(self, bookmark_value, bookmark_key=None, bulk_op_metadata=None):
         # Standard Singer bookmark
         singer.write_bookmark(
@@ -1205,6 +1231,7 @@ class Orders(Stream):
         current_order = None
         current_line_items = []
         current_discount_applications = []
+        current_customer_journey_moments = []
 
         for line in resp.iter_lines():
             if not line:
@@ -1218,6 +1245,9 @@ class Orders(Stream):
                 if self.is_discount_application(rec):
                     # It's a discount application belonging to current_order
                     current_discount_applications.append(rec)
+                elif self.is_customer_journey_moment(rec):
+                    # It's a customer journey moment belonging to current_order
+                    current_customer_journey_moments.append(rec)
                 else:
                     # It's a line item belonging to current_order
                     current_line_items.append(rec)
@@ -1225,20 +1255,30 @@ class Orders(Stream):
                 if current_order:
                     current_order["lineItems"] = current_line_items
                     current_order["discountApplications"] = current_discount_applications
+                    current_order["_customerJourneyMoments"] = current_customer_journey_moments
                     yield current_order
                 # Start tracking new parent group
                 current_order = rec
                 current_line_items = []
                 current_discount_applications = []
+                current_customer_journey_moments = []
         # Yield the last parent group (if exists)
         if current_order:
             current_order["lineItems"] = current_line_items
             current_order["discountApplications"] = current_discount_applications
+            current_order["_customerJourneyMoments"] = current_customer_journey_moments
             yield current_order
 
     def transform_object(self, obj):
-        if obj.get("lineItems", {}).get("edges"):
-            obj["lineItems"] = [item["node"] for item in obj["lineItems"]["edges"]]
+        line_items = obj.get("lineItems")
+        # The bulk-operation sync path (parse_bulk_jsonl) already yields
+        # lineItems as a flat list; only the non-bulk edges/node shape needs
+        # flattening here.
+        if isinstance(line_items, dict) and line_items.get("edges"):
+            obj["lineItems"] = [item["node"] for item in line_items["edges"]]
+        moments = obj.pop("_customerJourneyMoments", None)
+        if moments and obj.get("customerJourneySummary"):
+            obj["customerJourneySummary"]["moments"] = moments
         return obj
 
     def clear_bulk_operation_state(self):
@@ -1296,6 +1336,7 @@ class Orders(Stream):
                 )
             if existing_url:
                 for obj in self.parse_bulk_jsonl(existing_url):
+                    obj = self.transform_object(obj)
                     replication_value = utils.strptime_to_utc(obj[self.replication_key])
                     current_bookmark = max(current_bookmark, replication_value)
 
