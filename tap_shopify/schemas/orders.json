@@ -668,6 +668,30 @@
             "precision": { "type": ["null", "string"] }
           }
         },
+        "moments": {
+          "type": ["null", "array"],
+          "items": {
+            "type": ["null", "object"],
+            "properties": {
+              "__typename": { "type": ["null", "string"] },
+              "occurredAt": { "type": ["null", "string"], "format": "date-time" },
+              "landingPage": { "type": ["null", "string"] },
+              "referrerUrl": { "type": ["null", "string"] },
+              "source": { "type": ["null", "string"] },
+              "sourceType": { "type": ["null", "string"] },
+              "utmParameters": {
+                "type": ["null", "object"],
+                "properties": {
+                  "campaign": { "type": ["null", "string"] },
+                  "content": { "type": ["null", "string"] },
+                  "medium": { "type": ["null", "string"] },
+                  "source": { "type": ["null", "string"] },
+                  "term": { "type": ["null", "string"] }
+                }
+              }
+            }
+          }
+        },
         "ready": {
           "type": ["null", "boolean"]
         }
